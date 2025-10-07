@@ -19,7 +19,7 @@ class DbSchemaAuditorServiceProvider extends PackageServiceProvider
             ->name('db-schema-auditor')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_db_schema_auditor_table')
+            ->hasMigration('create_db_audits_table')
             ->hasCommand(DbSchemaAuditorCommand::class);
     }
 }

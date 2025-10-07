@@ -30,20 +30,92 @@ php artisan vendor:publish --tag="db-schema-auditor-config"
 
 ## Usage
 
-```php
-# Audit Database Design - by default it will display summary of audit in console
+```bash
+# Basic audit - displays summary in console
 php artisan db:audit
 
-# Output as JSON - default path to /database/audit/
-# Available format - console(default), json, markdown, csv, database
+# Audit with model relationship analysis
+php artisan db:audit --models
+
+# Output as JSON to default path (/database/audit/)
 php artisan db:audit --format=json
 
 # Output as JSON to specified directory
 php artisan db:audit --format=json --path=/storage/audit
 
 # Output as Markdown
-php artisan db:audit --format=md
+php artisan db:audit --format=markdown
+
+# Output as CSV
+php artisan db:audit --format=csv
+
+# Output as HTML report
+php artisan db:audit --format=html
+
+# Generate fix migrations automatically
+php artisan db:audit --generate-fixes
+
+# Save results to database for tracking
+php artisan db:audit --save-database
+
+# Audit specific database connection
+php artisan db:audit --connection=secondary
+
+# Full audit with all options
+php artisan db:audit --models --generate-fixes --save-database --format=markdown
 ```
+
+### Supported Database Types
+
+This package supports all major database types:
+
+- **MySQL** / **MariaDB** - Full support for indexes, foreign keys, and constraints
+- **PostgreSQL** - Complete support including partial indexes and advanced features
+- **Microsoft SQL Server** - Full support for SQL Server specific features
+- **Oracle** - Support for Oracle-specific indexes and constraints
+- **SQLite** - Basic support for SQLite databases
+
+### Output Formats
+
+- **console** (default) - Colored terminal output with recommendations
+- **json** - Machine-readable JSON format for integration
+- **markdown** - GitHub-flavored markdown for documentation
+- **csv** - Spreadsheet-compatible format for analysis
+- **html** - Styled HTML report for sharing
+
+### What Gets Audited
+
+**Database Structure:**
+
+- Missing indexes on foreign key columns
+- Missing indexes on commonly queried columns
+- Missing unique constraints
+- Missing foreign key constraints
+- Orphaned records in relationships
+- Suspicious column patterns
+
+**Model Relationships (with --models flag):**
+
+- Missing inverse relationships
+- Relationship naming inconsistencies
+- Missing model relationships for database foreign keys
+- Relationship method issues
+
+### Generated Outputs
+
+**Migration Files (with --generate-fixes):**
+
+- Index creation migrations
+- Unique constraint migrations
+- Foreign key suggestion migrations (commented for review)
+- Orphaned record cleanup scripts
+
+**Database Storage (with --save-database):**
+
+- Complete audit history
+- Issue tracking and resolution status
+- Model analysis results
+- Performance trending over time
 
 ## Testing
 

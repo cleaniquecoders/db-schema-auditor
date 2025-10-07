@@ -1,0 +1,80 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::create('db_audits', function (Blueprint $table) {
+            $table->id();
+            $table->uuid('uuid')->unique();
+            $table->string('connection_name')->nullable();
+            $table->string('database_type');
+            $table->integer('total_tables')->default(0);
+            $table->integer('tables_scanned')->default(0);
+            $table->integer('total_issues')->default(0);
+            $table->json('audit_config')->nullable();
+            $table->decimal('execution_time', 8, 2)->nullable(); // in seconds
+            $table->enum('status', ['pending', 'running', 'completed', 'failed'])->default('pending');
+            $table->text('error_message')->nullable();
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+            $table->timestamps();
+
+            $table->index(['connection_name', 'created_at']);
+            $table->index(['status', 'created_at']);
+            $table->index('database_type');
+        });
+
+        Schema::create('db_audit_issues', function (Blueprint $table) {
+            $table->id();
+            $table->uuid('uuid')->unique();
+            $table->foreignId('audit_id')->constrained('db_audits')->onDelete('cascade');
+            $table->string('issue_type');
+            $table->string('table_name');
+            $table->string('column_name')->nullable();
+            $table->enum('severity', ['high', 'medium', 'low'])->default('medium');
+            $table->text('recommendation')->nullable();
+            $table->json('details')->nullable();
+            $table->integer('count')->nullable(); // for orphaned records count
+            $table->string('referenced_table')->nullable();
+            $table->string('referenced_column')->nullable();
+            $table->boolean('fix_generated')->default(false);
+            $table->boolean('fix_applied')->default(false);
+            $table->timestamps();
+
+            $table->index(['audit_id', 'issue_type']);
+            $table->index(['table_name', 'column_name']);
+            $table->index(['severity', 'issue_type']);
+            $table->index('fix_applied');
+        });
+
+        Schema::create('db_audit_model_analyses', function (Blueprint $table) {
+            $table->id();
+            $table->uuid('uuid')->unique();
+            $table->foreignId('audit_id')->constrained('db_audits')->onDelete('cascade');
+            $table->string('model_class');
+            $table->string('table_name');
+            $table->integer('relationships_found')->default(0);
+            $table->json('relationships_data')->nullable();
+            $table->integer('issues_found')->default(0);
+            $table->json('issues_data')->nullable();
+            $table->string('file_path')->nullable();
+            $table->timestamps();
+
+            $table->index(['audit_id', 'model_class']);
+            $table->index('table_name');
+            $table->index('issues_found');
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('db_audit_model_analyses');
+        Schema::dropIfExists('db_audit_issues');
+        Schema::dropIfExists('db_audits');
+    }
+};
