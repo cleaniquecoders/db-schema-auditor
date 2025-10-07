@@ -8,11 +8,12 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('migration_table_name_table', function (Blueprint $table) {
+        Schema::create('db_audits', function (Blueprint $table) {
             $table->id();
-
-            // add fields
-
+            $table->uuid()->unique();
+            $table->json('result')->nullable();
+            $table->json('meta')->nullable();
+            $table->text('remarks')->nullable();
             $table->timestamps();
         });
     }

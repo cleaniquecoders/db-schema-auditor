@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace CleaniqueCoders\DbSchemaAuditor\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class DbSchemaAuditorCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'db-schema-auditor';
 
     public $description = 'My command';
 
