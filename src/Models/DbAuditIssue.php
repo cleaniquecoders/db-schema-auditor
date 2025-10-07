@@ -7,6 +7,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property string $uuid
+ * @property int $audit_id
+ * @property string $issue_type
+ * @property string $table_name
+ * @property string|null $column_name
+ * @property string $severity
+ * @property string|null $recommendation
+ * @property array|null $details
+ * @property int|null $count
+ * @property string|null $referenced_table
+ * @property string|null $referenced_column
+ * @property bool $fix_generated
+ * @property bool $fix_applied
+ */
 class DbAuditIssue extends Model
 {
     use HasFactory, InteractsWithUuid;

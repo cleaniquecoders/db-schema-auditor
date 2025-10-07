@@ -7,6 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property string $uuid
+ * @property int $audit_id
+ * @property string $model_class
+ * @property string $table_name
+ * @property int $relationships_found
+ * @property array|null $relationships_data
+ * @property int $issues_found
+ * @property array|null $issues_data
+ * @property string|null $file_path
+ */
 class DbAuditModelAnalysis extends Model
 {
     use HasFactory, InteractsWithUuid;
