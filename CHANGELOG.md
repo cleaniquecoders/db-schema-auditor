@@ -2,6 +2,24 @@
 
 All notable changes to `db-schema-auditor` will be documented in this file.
 
+## 1.1.0 - 2026-03-31
+
+### What's Changed
+
+#### Added
+
+- Laravel 13 support (illuminate constraints include `^13.0`)
+- PHPUnit 12 compatibility
+- Pest 4 support
+
+#### Changed
+
+- Updated `phpunit.xml.dist` for PHPUnit 12
+- Standardized CI workflow (Laravel 12 + PHP 8.4/8.3)
+- Updated dev dependencies (larastan, phpstan plugins, collision)
+
+**Full Changelog**: https://github.com/cleaniquecoders/db-schema-auditor/compare/1.0.0...1.1.0
+
 ## First Release - 2025-10-07
 
 ### 📋 DB Schema Auditor v1.0.0 - Release Summary
@@ -24,6 +42,7 @@ php artisan db:audit
 
 # Full audit with fixes
 php artisan db:audit --models --generate-fixes --format=markdown
+
 
 ```
 #### 💡 Benefits
